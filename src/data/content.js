@@ -38,7 +38,7 @@ export const stats = [
   { value: 1600, suffix: '+', label: 'Agreements processed', detail: 'OCR + anomaly detection at scale' },
   { value: 9, suffix: '', label: 'Algorithms benchmarked', detail: 'Side-by-side model comparison' },
   { value: 12, suffix: '', label: 'Departments analysed', detail: 'Clustering & logistic regression' },
-  { value: 4, suffix: '', label: 'Certifications earned', detail: 'Kaggle · DataCamp · Microsoft' },
+  { value: 5, suffix: '', label: 'Certifications earned', detail: 'IBM · Kaggle · DataCamp · Microsoft' },
 ];
 
 export const marqueeItems = [
@@ -231,7 +231,9 @@ export const education = [
   },
 ];
 
+// Newest and most recognisable issuer first.
 export const certifications = [
+  { name: 'Python for Data Science, AI & Development', issuer: 'IBM · Coursera' },
   { name: 'Data Science with Python', issuer: 'Great Learning' },
   { name: 'Introduction to Machine Learning', issuer: 'Kaggle' },
   { name: 'Introduction to Python', issuer: 'DataCamp' },
