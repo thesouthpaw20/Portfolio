@@ -13,10 +13,13 @@
   /* Fluid type scale — min 360px viewport, max 1600px viewport.
      Tuned compact: the page should read as a dense editorial spread on a
      desktop monitor, not as a magnified mobile layout. */
-  --fs-micro: clamp(0.5625rem, 0.545rem + 0.07vw, 0.625rem);
-  --fs-caption: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
-  --fs-body-s: clamp(0.8125rem, 0.795rem + 0.08vw, 0.875rem);
-  --fs-body: clamp(0.875rem, 0.85rem + 0.11vw, 0.9375rem);
+  /* Small sizes are held flat rather than fluid. Their desktop values are
+     unchanged, but they no longer shrink on phones — 9px uppercase mono with
+     0.2em tracking was not readable on a handset. */
+  --fs-micro: 0.625rem;
+  --fs-caption: 0.75rem;
+  --fs-body-s: 0.875rem;
+  --fs-body: 0.9375rem;
   --fs-lead: clamp(0.9375rem, 0.9rem + 0.24vw, 1.125rem);
   --fs-h4: clamp(1rem, 0.94rem + 0.28vw, 1.1875rem);
   --fs-h3: clamp(1.1875rem, 1.05rem + 0.6vw, 1.625rem);

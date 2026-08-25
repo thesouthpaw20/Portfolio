@@ -1,0 +1,202 @@
+/* ==========================================================================
+   RESPONSIVE — cross-cutting rules that only apply to a device class:
+   touch input, notched safe areas, landscape phones, and small-screen
+   performance. Per-component breakpoints stay in their own stylesheets.
+   Loaded last so it can correct the layers above it.
+   ========================================================================== */
+
+/* ==========================================================================
+   SAFE AREAS
+   index.html sets viewport-fit=cover, so on notched phones the page paints
+   edge to edge — content must be inset from the notch and home indicator.
+   ========================================================================== */
+
+@supports (padding: max(0px)) {
+  .shell {
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+  }
+
+  .nav__inner,
+  .nav-overlay {
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+  }
+
+  .nav-overlay {
+    padding-bottom: max(var(--sp-8), env(safe-area-inset-bottom));
+  }
+
+  .footer__base {
+    padding-bottom: max(var(--sp-6), env(safe-area-inset-bottom));
+  }
+}
+
+/* ==========================================================================
+   TOUCH INPUT
+   Anything revealed only by :hover is invisible on a touch screen. On coarse
+   pointers those affordances are shown by default instead.
+   ========================================================================== */
+
+@media (hover: none) {
+  .degree__arrow {
+    opacity: 1;
+    transform: none;
+    color: var(--accent);
+    border-color: var(--accent-line);
+  }
+
+  .hero-stat::before {
+    transform: scaleY(1);
+  }
+
+  .degree::before {
+    transform: scaleX(1);
+  }
+
+  /* Hover lifts and glows never resolve on touch — they just leave elements
+     stuck mid-transition after a tap. Neutralise them. */
+  .btn:hover,
+  .skill-group:hover,
+  .cert:hover,
+  .skill:hover,
+  .about__resume:hover {
+    transform: none;
+  }
+
+  .marquee__track {
+    /* :hover pause is unreachable; keep it moving. */
+    animation-play-state: running !important;
+  }
+}
+
+@media (pointer: coarse) {
+  /* Comfortable tap targets — 44px is the accessible minimum. */
+  .nav__burger {
+    width: 44px;
+    height: 44px;
+  }
+
+  .footer__nav a,
+  .footer__meta a,
+  .footer__top,
+  .nav-overlay__foot a {
+    padding-block: 0.4rem;
+  }
+
+  .chip {
+    padding: 0.45rem 0.8rem;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: rgba(138, 106, 56, 0.16);
+  }
+}
+
+/* ==========================================================================
+   SMALL SCREENS — performance
+   Stacked backdrop-filters plus an animated grain layer are the two most
+   expensive things on the page and the least visible on a handset.
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  .atmosphere__grain {
+    animation: none;
+    opacity: calc(var(--grain-opacity) * 0.6);
+  }
+
+  .atmosphere__grid {
+    background-size: 64px 64px;
+  }
+
+  /* Swap translucent panes for opaque ones — same look, no blur cost. */
+  .about__aside,
+  .certs,
+  .skill-group {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--surface);
+  }
+
+  .hero__badge {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg-elev);
+  }
+
+  .nav[data-scrolled='true'] {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* ==========================================================================
+   NARROW PHONES
+   ========================================================================== */
+
+@media (max-width: 420px) {
+  .hero__title-last {
+    padding-left: var(--sp-4);
+  }
+
+  .hero__actions {
+    width: 100%;
+  }
+
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .timeline__year {
+    display: none;
+  }
+
+  .hero__stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ==========================================================================
+   LANDSCAPE PHONES
+   A 100svh hero is unusable at 380px of height — let it size to its content
+   and scroll instead of squashing.
+   ========================================================================== */
+
+@media (max-height: 540px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding-top: calc(var(--nav-h) + var(--sp-6));
+    padding-bottom: var(--sp-7);
+  }
+
+  .hero__scroll {
+    display: none;
+  }
+
+  .nav-overlay {
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding-top: calc(var(--nav-h) + var(--sp-4));
+  }
+
+  .nav-overlay__link {
+    font-size: clamp(1.25rem, 5vh, 1.75rem);
+  }
+}
+
+/* ==========================================================================
+   LARGE DESKTOP
+   Beyond the max-width the page is centred; give the hero a little more room
+   rather than letting the portrait drift far from the text.
+   ========================================================================== */
+
+@media (min-width: 1800px) {
+  .hero__inner {
+    gap: clamp(4rem, 5vw, 7rem);
+  }
+
+  .hero__portrait {
+    width: min(380px, 22vw);
+  }
+}
