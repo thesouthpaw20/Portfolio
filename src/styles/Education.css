@@ -1,0 +1,209 @@
+/* ==========================================================================
+   EDUCATION — degree ledger beside a certifications panel.
+   ========================================================================== */
+
+.education__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+@media (min-width: 980px) {
+  .education__grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+    align-items: start;
+  }
+}
+
+/* ---- Degrees ----------------------------------------------------------- */
+
+.education__list {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.degree {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--sp-2) var(--sp-4);
+  align-items: center;
+  padding: clamp(1.25rem, 2.6vw, 2rem) 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-inline var(--dur-slow) var(--ease-out);
+}
+
+@media (min-width: 720px) {
+  .degree {
+    grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) auto;
+  }
+}
+
+.degree::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 620ms var(--ease-out);
+}
+
+.degree:hover::before {
+  transform: scaleX(1);
+}
+
+.degree:hover {
+  padding-inline: clamp(0.5rem, 1.4vw, 1.1rem);
+}
+
+.degree__period {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-3);
+  white-space: nowrap;
+  order: -1;
+}
+
+.degree__body {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
+.degree__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: var(--tracking-display);
+  color: var(--text);
+}
+
+.degree__focus {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.degree__institution {
+  font-size: var(--fs-body-s);
+  line-height: 1.5;
+  color: var(--text-2);
+  font-weight: 300;
+}
+
+.degree__arrow {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--text-3);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+
+.degree__arrow svg {
+  width: 15px;
+  height: 15px;
+}
+
+.degree:hover .degree__arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--accent);
+  border-color: var(--accent-line);
+}
+
+/* ---- Certifications ---------------------------------------------------- */
+
+.certs {
+  display: grid;
+  gap: var(--sp-5);
+  padding: clamp(1.25rem, 2.4vw, 1.85rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--glass-strong), var(--glass));
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  box-shadow: var(--glass-edge), var(--shadow-md);
+}
+
+.certs__title {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.certs__list {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.cert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  transition: background-color var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.cert:hover {
+  background: var(--surface-hover);
+  transform: translateX(4px);
+}
+
+.cert__mark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+
+.cert__mark svg {
+  width: 13px;
+  height: 13px;
+}
+
+.cert:hover .cert__mark {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+.cert__text {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.cert__name {
+  font-size: var(--fs-body-s);
+  font-weight: 450;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.cert__issuer {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-3);
+}

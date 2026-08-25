@@ -1,0 +1,403 @@
+/* ==========================================================================
+   HERO — editorial split: oversized serif name against a framed portrait,
+   with a stat rail beneath and a scroll cue anchored bottom-right.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(5.25rem, 11vh, 7.5rem);
+  padding-bottom: clamp(3rem, 7vh, 6rem);
+  overflow: hidden;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+  flex: 1;
+}
+
+@media (min-width: 1000px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+/* ---- Left column ------------------------------------------------------- */
+
+.hero__lede {
+  display: grid;
+  gap: clamp(1.25rem, 2.6vw, 2rem);
+  min-width: 0;
+}
+
+.hero__eyebrow {
+  opacity: 0;
+  animation: fade-in 700ms var(--ease-out) 200ms forwards;
+}
+
+.hero__title {
+  font-size: var(--fs-h1);
+  line-height: 0.86;
+  display: grid;
+  gap: 0.01em;
+}
+
+.hero__title-last {
+  padding-left: clamp(1.5rem, 8vw, 7rem);
+}
+
+.hero[data-booted='true'] .hero__title .mask-line > span {
+  transform: translate3d(0, 0, 0);
+}
+
+.hero__meta {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  max-width: 60ch;
+}
+
+.hero__tagline {
+  font-size: var(--fs-lead);
+}
+
+.hero__underline {
+  position: relative;
+  color: var(--text);
+  font-weight: 400;
+  white-space: normal;
+}
+
+.hero__underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.08em;
+  height: 1px;
+  background: var(--accent-line);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.hero__actions .btn:first-child {
+  transform: translate3d(var(--mx, 0), var(--my, 0), 0);
+  transition: transform 520ms var(--ease-out), color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+/* ---- Portrait ---------------------------------------------------------- */
+
+.hero__portrait {
+  position: relative;
+  justify-self: center;
+  width: min(288px, 68vw);
+  display: grid;
+  gap: var(--sp-5);
+  perspective: 1100px;
+}
+
+/* Gilded halo bloom behind the frame — sits under the portrait and gives the
+   whole right column a light source of its own. */
+.hero__portrait::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: 150%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(138, 106, 56, 0.2) 0%,
+    rgba(138, 106, 56, 0.07) 34%,
+    transparent 66%
+  );
+  filter: blur(22px);
+  pointer-events: none;
+  z-index: -1;
+  /* No keyframe here — it would overwrite the centring transform above. */
+}
+
+@media (min-width: 1000px) {
+  .hero__portrait {
+    justify-self: end;
+    width: min(330px, 26vw);
+  }
+}
+
+.hero__frame {
+  position: relative;
+  aspect-ratio: 1 / 1.18;
+  border-radius: 200px 200px var(--r-lg) var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))
+    translate3d(var(--shift-x, 0), var(--shift-y, 0), 0);
+  transform-style: preserve-3d;
+  transition: transform 700ms var(--ease-out), border-color var(--dur-slow) var(--ease-out),
+    box-shadow var(--dur-slow) var(--ease-out);
+  box-shadow: var(--glass-edge), var(--shadow-lg);
+  /* No idle float here — a keyframed transform would clobber the pointer tilt
+     written to --tilt-* above. The badge carries the ambient motion instead. */
+}
+
+.hero__frame:hover {
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-glow), var(--shadow-lg);
+}
+
+.hero__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  filter: var(--photo-filter);
+  transform: scale(1.04);
+  transition: filter var(--dur-slower) var(--ease-out), transform var(--dur-slower) var(--ease-out);
+}
+
+.hero__frame:hover .hero__photo {
+  filter: grayscale(0) contrast(1.04) brightness(1);
+  transform: scale(1.09);
+}
+
+.hero__frame-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+      180deg,
+      transparent 42%,
+      color-mix(in srgb, var(--bg) 78%, transparent) 100%
+    ),
+    radial-gradient(70% 50% at 50% 0%, var(--accent-soft), transparent 62%);
+  mix-blend-mode: normal;
+}
+
+.hero__frame-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 3px,
+    color-mix(in srgb, var(--bg-deep) 40%, transparent) 3px 4px
+  );
+  opacity: 0.28;
+}
+
+/* ---- Rotating availability badge --------------------------------------- */
+
+.hero__badge {
+  position: absolute;
+  right: -14px;
+  bottom: 92px;
+  width: 108px;
+  height: 108px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  z-index: 4;
+  animation: float-soft 9s var(--ease-in-out) infinite;
+}
+
+@media (max-width: 640px) {
+  .hero__badge {
+    width: 88px;
+    height: 88px;
+    right: -6px;
+    bottom: 74px;
+  }
+}
+
+.hero__badge-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: spin-slow 22s linear infinite;
+}
+
+.hero__badge-ring text {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  fill: var(--text-2);
+}
+
+.hero__badge-dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2f8f5b;
+}
+
+.hero__badge-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #2f8f5b;
+  animation: pulse-ring 2.4s var(--ease-out) infinite;
+}
+
+.hero__caption {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.hero__caption-rule {
+  height: 1px;
+  width: 28px;
+  background: var(--accent);
+  flex: none;
+}
+
+/* ---- Stat rail --------------------------------------------------------- */
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(1.75rem, 4vw, 3rem);
+  background: var(--line);
+  border-block: 1px solid var(--line);
+}
+
+@media (min-width: 800px) {
+  .hero__stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.hero-stat {
+  position: relative;
+  display: grid;
+  gap: 0.25rem;
+  align-content: start;
+  padding: clamp(0.9rem, 1.9vw, 1.3rem) clamp(0.8rem, 1.6vw, 1.2rem);
+  background: var(--bg);
+  transition: background-color var(--dur-base) var(--ease-out);
+}
+
+/* Accent wick that climbs the left edge on hover. */
+.hero-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.hero-stat:hover {
+  background: var(--surface);
+}
+
+.hero-stat:hover::before {
+  transform: scaleY(1);
+}
+
+.hero-stat__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.2vw, 2.1rem);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-stat__value em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero-stat__label {
+  font-size: var(--fs-body-s);
+  color: var(--text);
+  font-weight: 450;
+  line-height: 1.35;
+}
+
+.hero-stat__detail {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+
+/* ---- Scroll cue -------------------------------------------------------- */
+
+.hero__scroll {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(1.25rem, 3vh, 2.25rem);
+  display: none;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--text-3);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.hero__scroll:hover {
+  color: var(--accent);
+}
+
+@media (min-width: 1000px) {
+  .hero__scroll {
+    display: inline-flex;
+  }
+}
+
+.hero__scroll-track {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 54px;
+  background: var(--line-strong);
+  overflow: hidden;
+}
+
+.hero__scroll-thumb {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  animation: scroll-hint 2.3s var(--ease-in-out) infinite;
+}

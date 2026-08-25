@@ -1,0 +1,238 @@
+/* ==========================================================================
+   EXPERIENCE — rail timeline with a ghosted year watermark per entry.
+   ========================================================================== */
+
+.timeline {
+  display: grid;
+  gap: clamp(1.75rem, 3.2vw, 3rem);
+}
+
+.timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: start;
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.timeline__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+@media (min-width: 900px) {
+  .timeline__item {
+    grid-template-columns: minmax(160px, 0.28fr) 26px minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+}
+
+/* ---- Rail -------------------------------------------------------------- */
+
+.timeline__marker {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  height: 100%;
+  grid-row: 1 / span 2;
+  grid-column: 1;
+}
+
+@media (min-width: 900px) {
+  .timeline__marker {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+.timeline__dot {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  margin-top: 0.55rem;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  flex: none;
+  z-index: 2;
+  transition: background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.timeline__item[data-status='current'] .timeline__dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px var(--accent-soft);
+}
+
+.timeline__item:hover .timeline__dot {
+  background: var(--accent);
+}
+
+.timeline__line {
+  position: absolute;
+  top: 1.5rem;
+  bottom: calc(clamp(2rem, 4vw, 3.5rem) * -1 - 1px);
+  width: 1px;
+  background: linear-gradient(180deg, var(--line-strong), transparent);
+}
+
+.timeline__item:last-child .timeline__line {
+  display: none;
+}
+
+/* ---- Aside (period) ---------------------------------------------------- */
+
+.timeline__aside {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+@media (min-width: 900px) {
+  .timeline__aside {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0;
+    padding-top: 0.35rem;
+  }
+}
+
+.timeline__period {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.timeline__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(47, 143, 91, 0.4);
+  background: rgba(47, 143, 91, 0.12);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: #2f8f5b;
+  line-height: 1;
+}
+
+.timeline__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: fade-in 1.4s var(--ease-in-out) infinite alternate;
+}
+
+/* ---- Body -------------------------------------------------------------- */
+
+.timeline__body {
+  grid-column: 2;
+  display: grid;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .timeline__body {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+.timeline__head {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.timeline__role {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: var(--tracking-display);
+  color: var(--text);
+}
+
+.timeline__company {
+  font-size: var(--fs-body-s);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.timeline__summary {
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--text-2);
+  font-weight: 300;
+  max-width: 60ch;
+  font-style: italic;
+}
+
+.timeline__points {
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 74ch;
+}
+
+.timeline__points li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-relaxed);
+  color: var(--text-2);
+  font-weight: 300;
+}
+
+.timeline__points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.timeline__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* ---- Year watermark ---------------------------------------------------- */
+
+.timeline__year {
+  position: absolute;
+  right: 0;
+  top: -0.35em;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  color: var(--text);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+  transition: opacity var(--dur-slower) var(--ease-out);
+}
+
+.timeline__item:hover .timeline__year {
+  opacity: 0.13;
+}

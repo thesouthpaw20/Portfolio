@@ -1,0 +1,110 @@
+/* ==========================================================================
+   CURSOR — dot + lagging ring. Mounted only on fine-pointer devices.
+   ========================================================================== */
+
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.cursor[data-visible='true'] {
+  opacity: 1;
+}
+
+.cursor__dot,
+.cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.cursor__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  transition: width var(--dur-base) var(--ease-out), height var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.cursor__ring {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  transition: width 420ms var(--ease-spring), height 420ms var(--ease-spring),
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out), backdrop-filter var(--dur-base) var(--ease-out);
+}
+
+/* ---- Variants ---------------------------------------------------------- */
+
+.cursor__ring[data-variant='link'] {
+  width: 64px;
+  height: 64px;
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  backdrop-filter: blur(2px);
+}
+
+.cursor__dot[data-variant='link'] {
+  opacity: 0;
+}
+
+.cursor__ring[data-variant='view'] {
+  width: 104px;
+  height: 104px;
+  border-color: transparent;
+  background: var(--accent);
+}
+
+.cursor__dot[data-variant='view'] {
+  opacity: 0;
+}
+
+.cursor__ring[data-variant='text'] {
+  width: 12px;
+  height: 46px;
+  border-radius: var(--r-xs);
+  border-color: var(--accent-line);
+}
+
+.cursor__ring[data-variant='press'] {
+  width: 26px;
+  height: 26px;
+  border-color: var(--accent);
+}
+
+.cursor__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-inverse);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 260ms var(--ease-out) 90ms, transform 320ms var(--ease-spring) 90ms;
+}
+
+.cursor__ring[data-variant='view'] .cursor__label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hide the native cursor only where ours is actually running. */
+@media (hover: hover) and (pointer: fine) {
+  @media (prefers-reduced-motion: no-preference) {
+    body,
+    a,
+    button {
+      cursor: none;
+    }
+  }
+}

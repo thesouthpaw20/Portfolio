@@ -1,0 +1,182 @@
+/* ==========================================================================
+   SKILLS — four grouped panels with a sweeping sheen on hover.
+   ========================================================================== */
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+@media (min-width: 700px) {
+  .skills__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .skills__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---- Group panel ------------------------------------------------------- */
+
+.skill-group {
+  position: relative;
+  display: grid;
+  gap: var(--sp-5);
+  align-content: start;
+  padding: clamp(1.15rem, 2.2vw, 1.6rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: linear-gradient(165deg, var(--glass-strong), var(--glass));
+  backdrop-filter: blur(12px) saturate(125%);
+  -webkit-backdrop-filter: blur(12px) saturate(125%);
+  box-shadow: var(--glass-edge);
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out), box-shadow var(--dur-slow) var(--ease-out);
+}
+
+/* Gradient-lit border. A masked 1px ring means the border itself carries a
+   bronze-to-highlight gradient rather than one flat colour. */
+.skill-group::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    150deg,
+    var(--accent-line),
+    transparent 38%,
+    transparent 62%,
+    rgba(255, 255, 255, 0.55)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.skill-group:hover::before {
+  opacity: 1;
+}
+
+.skill-group::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 42%;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+  transform: translateX(-130%) skewX(-18deg);
+  opacity: 0;
+}
+
+.skill-group:hover {
+  border-color: var(--accent-line);
+  transform: translateY(-4px);
+  box-shadow: var(--glass-edge), var(--shadow-md), var(--glow-accent);
+}
+
+.skill-group:hover::after {
+  opacity: 1;
+  animation: sheen-sweep 1100ms var(--ease-out);
+}
+
+/* ---- Group head -------------------------------------------------------- */
+
+.skill-group__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-group__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent);
+  padding-top: 0.35rem;
+}
+
+.skill-group__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: var(--tracking-display);
+  color: var(--text);
+}
+
+.skill-group__caption {
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-3);
+  font-weight: 300;
+  margin-top: 0.25rem;
+}
+
+.skill-group__count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-3);
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  line-height: 1;
+}
+
+/* ---- Items ------------------------------------------------------------- */
+
+.skill-group__items {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.skill {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0.42rem 0;
+  font-size: var(--fs-body-s);
+  color: var(--text-2);
+  font-weight: 350;
+  line-height: 1.4;
+  transition: color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+
+.skill:hover {
+  color: var(--text);
+  transform: translateX(4px);
+}
+
+.skill__bullet {
+  width: 4px;
+  height: 4px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--text-3);
+  transition: background-color var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-spring);
+}
+
+.skill:hover .skill__bullet {
+  background: var(--accent);
+  transform: scale(1.9);
+}
+
+.skill-group:hover .skill__bullet {
+  background: var(--accent-deep);
+}

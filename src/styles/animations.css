@@ -1,0 +1,196 @@
+/* ==========================================================================
+   ANIMATIONS — keyframes plus the scroll-reveal contract used by useReveal().
+   ========================================================================== */
+
+/* ---- Keyframes --------------------------------------------------------- */
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, 3%, 0) scale(1.09);
+  }
+  100% {
+    transform: translate3d(-2%, 4%, 0) scale(1.03);
+  }
+}
+
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  17% { transform: translate(-4%, 3%); }
+  34% { transform: translate(3%, -5%); }
+  51% { transform: translate(-6%, -2%); }
+  68% { transform: translate(5%, 4%); }
+  85% { transform: translate(-2%, 6%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes mask-up {
+  from {
+    transform: translate3d(0, 108%, 0) rotate(3deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.75;
+  }
+  70% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scroll-hint {
+  0% { transform: translateY(-100%); opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Slow travelling highlight across gilded text. */
+@keyframes gild-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes sheen-sweep {
+  from { transform: translateX(-130%) skewX(-18deg); }
+  to { transform: translateX(230%) skewX(-18deg); }
+}
+
+/* ==========================================================================
+   SCROLL REVEAL
+   Elements opt in with [data-reveal]; useReveal() flips data-revealed once the
+   element enters the viewport. Stagger is driven by --reveal-delay.
+   ========================================================================== */
+
+[data-reveal] {
+  --reveal-delay: 0ms;
+  --reveal-shift: 30px;
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-shift), 0);
+  transition: opacity var(--dur-slower) var(--ease-out) var(--reveal-delay),
+    transform var(--dur-slower) var(--ease-out) var(--reveal-delay);
+  will-change: opacity, transform;
+}
+
+[data-reveal='left'] {
+  transform: translate3d(calc(var(--reveal-shift) * -1), 0, 0);
+}
+
+[data-reveal='right'] {
+  transform: translate3d(var(--reveal-shift), 0, 0);
+}
+
+[data-reveal='scale'] {
+  transform: scale(0.94);
+}
+
+[data-reveal='fade'] {
+  transform: none;
+}
+
+[data-reveal][data-revealed='true'] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Line-by-line masked text reveal ---------------------------------------- */
+
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.mask-line > span {
+  display: block;
+  transform: translate3d(0, 108%, 0);
+  transition: transform 1000ms var(--ease-out) var(--reveal-delay, 0ms);
+  will-change: transform;
+}
+
+[data-revealed='true'] .mask-line > span,
+.mask-line[data-revealed='true'] > span {
+  transform: translate3d(0, 0, 0);
+}
+
+/* ==========================================================================
+   REDUCED MOTION — strip everything decorative, keep content visible.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .mask-line > span {
+    transform: none !important;
+  }
+
+  .atmosphere__grain,
+  .atmosphere__aurora {
+    animation: none !important;
+  }
+}
