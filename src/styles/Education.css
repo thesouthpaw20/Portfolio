@@ -22,12 +22,18 @@
   border-top: 1px solid var(--line);
 }
 
+/* Placement is explicit at every width. Auto-placement here put the period in
+   the 1fr column and squeezed the degree title into the `auto` one, where it
+   overflowed and collided on narrow screens. */
 .degree {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--sp-2) var(--sp-4);
-  align-items: center;
+  grid-template-areas:
+    'period arrow'
+    'body   body';
+  gap: var(--sp-3) var(--sp-4);
+  align-items: start;
   padding: clamp(1.25rem, 2.6vw, 2rem) 0;
   border-bottom: 1px solid var(--line);
   transition: padding-inline var(--dur-slow) var(--ease-out);
@@ -36,6 +42,9 @@
 @media (min-width: 720px) {
   .degree {
     grid-template-columns: minmax(120px, 0.24fr) minmax(0, 1fr) auto;
+    grid-template-areas: 'period body arrow';
+    align-items: center;
+    gap: var(--sp-2) var(--sp-4);
   }
 }
 
@@ -66,10 +75,11 @@
   letter-spacing: var(--tracking-wide);
   color: var(--text-3);
   white-space: nowrap;
-  order: -1;
+  grid-area: period;
 }
 
 .degree__body {
+  grid-area: body;
   display: grid;
   gap: 0.28rem;
   min-width: 0;
@@ -97,6 +107,7 @@
 }
 
 .degree__arrow {
+  grid-area: arrow;
   display: grid;
   place-items: center;
   width: 34px;

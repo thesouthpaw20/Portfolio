@@ -39,11 +39,11 @@
    ========================================================================== */
 
 @media (hover: none) {
+  /* The degree row is not interactive — on desktop this arrow is a hover
+     flourish. Showing it permanently on touch would advertise a tap target
+     that does not exist, so it is hidden instead. */
   .degree__arrow {
-    opacity: 1;
-    transform: none;
-    color: var(--accent);
-    border-color: var(--accent-line);
+    display: none;
   }
 
   .hero-stat::before {
