@@ -58,10 +58,6 @@ export default function About() {
                 <dt>Education</dt>
                 <dd>MSc Computer Science (Data Analytics) · BSc Statistics</dd>
               </div>
-              <div className="about__fact">
-                <dt>Focus</dt>
-                <dd>Forecasting · Graph learning · RAG systems · BI</dd>
-              </div>
             </dl>
           </aside>
         </div>
