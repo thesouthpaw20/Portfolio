@@ -15,8 +15,7 @@ export const profile = {
   // Region only — the full postal address is deliberately not published.
   locationShort: 'Kerala, India',
   email: 'jobkgeorge2k@gmail.com',
-  phone: '+91 8075650894',
-  phoneHref: '+918075650894',
+  // No phone number is published — email and LinkedIn are the contact routes.
   linkedin: 'https://www.linkedin.com/in/job-kuriakose-george123',
   linkedinLabel: 'in/job-kuriakose-george123',
   availability: 'Open to data & AI roles',
@@ -243,5 +242,4 @@ export const certifications = [
 export const socials = [
   { label: 'LinkedIn', href: profile.linkedin, handle: profile.linkedinLabel },
   { label: 'Email', href: `mailto:${profile.email}`, handle: profile.email },
-  { label: 'Phone', href: `tel:${profile.phoneHref}`, handle: profile.phone },
 ];

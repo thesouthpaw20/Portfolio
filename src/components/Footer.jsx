@@ -32,9 +32,6 @@ export default function Footer() {
           <a href={`mailto:${profile.email}`} data-cursor="link">
             {profile.email}
           </a>
-          <a href={`tel:${profile.phoneHref}`} data-cursor="link">
-            {profile.phone}
-          </a>
           <a href={profile.linkedin} target="_blank" rel="noreferrer noopener" data-cursor="link">
             LinkedIn
           </a>
